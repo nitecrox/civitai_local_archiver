@@ -2984,14 +2984,25 @@ document.addEventListener('DOMContentLoaded', async function() {    // Check if 
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            });
-              if (response.ok) {
+            });            if (response.ok) {
                 const result = await response.json();
                 console.log('Cache refresh result:', result);
                 
-                // Reload models from the refreshed cache with force refresh
-                const modelsLoaded = await loadModels(true); // Force refresh for cache reload
-                if (modelsLoaded) {
+                // Use the models directly from the refresh response instead of reloading
+                if (result.success && Array.isArray(result.models)) {
+                    // Clear existing data completely
+                    models = [];
+                    filteredModels = [];
+                    selectedModels.clear();
+                    
+                    // Set models directly from refresh response (already filtered on server)
+                    models = result.models.map(model => ({
+                        ...model,
+                        safetensorsPath: model.safetensorsPath || model.filePath
+                    }));
+                    
+                    console.log(`Loaded ${models.length} models directly from cache refresh`);
+                    
                     // Reset pagination to first page
                     currentPage = 1;
                     localStorage.setItem('currentPage', currentPage.toString());
@@ -3008,6 +3019,9 @@ document.addEventListener('DOMContentLoaded', async function() {    // Check if 
                     populateFilterOptions();
                     updateSearchStats();
                     
+                    // Save models to localStorage for persistence
+                    saveModelsToLocalStorage();
+                    
                     // Start image reprocessing for refreshed models
                     if (models.length > 0) {
                         console.log('Starting image reprocessing after cache refresh');
@@ -3019,7 +3033,7 @@ document.addEventListener('DOMContentLoaded', async function() {    // Check if 
                     elements.statusBar.textContent = `Cache refreshed - loaded ${models.length} models`;
                     elements.statusBar.className = 'status-bar success';
                 } else {
-                    elements.statusBar.textContent = 'Cache refreshed but no models loaded';
+                    elements.statusBar.textContent = 'Cache refreshed but no models returned';
                     elements.statusBar.className = 'status-bar warning';
                 }
             } else {

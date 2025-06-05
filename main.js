@@ -126,6 +126,23 @@ const favoritesStorage = new FavoritesStorage();
 
 let mainWindow;
 
+// Clear Electron user data on startup
+async function clearAppCache() {
+    try {
+        const userDataPath = app.getPath('userData');
+        const cachePath = path.join(userDataPath, 'Cache');
+        const gpuCachePath = path.join(userDataPath, 'GPUCache');
+        
+        // Clear Electron's internal cache directories
+        await fs.rmdir(cachePath, { recursive: true }).catch(() => {});
+        await fs.rmdir(gpuCachePath, { recursive: true }).catch(() => {});
+        
+        console.log('Cleared Electron cache directories');
+    } catch (error) {
+        console.log('Cache clear skipped:', error.message);
+    }
+}
+
 function createWindow() {
     // Create the browser window with ultra-optimized settings for instant startup
     mainWindow = new BrowserWindow({
@@ -281,7 +298,7 @@ function createWindow() {
     });
 
     // Open DevTools on startup for development
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     // Disable DevTools context menu to reduce errors
     mainWindow.webContents.on('context-menu', (event, params) => {
@@ -294,7 +311,10 @@ function createWindow() {
     });
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(async () => {
+    await clearAppCache();
+    createWindow();
+});
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {

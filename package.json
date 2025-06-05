@@ -12,9 +12,11 @@
   },
   "scripts": {
     "start": "electron .",
-    "dev": "NODE_ENV=development electron .",
-    "prod": "NODE_ENV=production electron .",
-    "build": "electron-builder"
+    "dev": "set NODE_ENV=development && electron .",
+    "prod": "set NODE_ENV=production && electron .",
+    "build": "set NODE_ENV=production && electron-builder",
+    "build-win": "set NODE_ENV=production && electron-builder --win",
+    "dist": "set NODE_ENV=production && electron-builder --publish=never"
   },
   "name": "civarchive",
   "version": "1.0.0",
@@ -25,8 +27,25 @@
   },
   "build": {
     "appId": "com.civarchive.app",
+    "productName": "CivArchive",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!cache/**/*",
+      "!dist/**/*",
+      "!backups/**/*",
+      "!.git/**/*",
+      "!README.md",
+      "!*.zip",
+      "!node_modules/.cache/**/*"
+    ],
     "win": {
       "target": "portable"
+    },
+    "portable": {
+      "artifactName": "CivArchive-Portable.exe"
     }
   },
   "keywords": [],
