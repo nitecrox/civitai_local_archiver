@@ -27,8 +27,6 @@ Because I am fully using AI for this, you know how it goes, fix 1 bug add 2 new 
 
 **Note that this is made mainly for my personal use**, but it turned out too good for me not to share it. That's why I won't actively support it and you can more or less consider this version final. If there is an update I will let you all know, but don't expect it.
 
-Here's the link to the github page with all the code and the app. Feel free to edit it however you like. It was fully written by AI so that's why it is like it is.
-
 It would be awesome if you have lots of experience with web develpment and you can refactor the code. Currently there is one big script.js file with 3000+ lines of code, which contains basically all of the functionality of the main page (caching, filtering, sorting, search, pagination, importing models, ...). 
 It's getting hard for me to add new features using only AI because it doesn't really work well with such big files. And it's hard for it to refactor it into smaller scripts because there is so much of it and it's so tightly knit together.
 If you have the free time to clean up the code and maybe improve perfomance and caching, maybe even find and fix some new bugs, I would be really grateful.
