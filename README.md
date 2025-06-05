@@ -47,9 +47,13 @@ python:  https://www.python.org/downloads/
 
 node.js: https://nodejs.org/en/download (I tested with version v22.16.0 (LTS))
 
-Next, run these commands in command prompt:
+Download the repository as .zip file and extract it.
+
+Next, open the command prompt in the app directory, the one with start-civarchive.bat, and run these commands:
 
 ```npm install electron```
+
+```npm install```
 
 ```npm audit fix```
 
