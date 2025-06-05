@@ -1,0 +1,36 @@
+{
+  "dependencies": {
+    "axios": "^1.9.0",
+    "better-sqlite3": "^11.10.0",
+    "dialog": "^0.3.1",
+    "express": "^5.1.0",
+    "multer": "^2.0.0",
+    "node-fetch": "^3.3.2",
+    "node-file-dialog": "^1.0.3",
+    "path": "^0.12.7",
+    "sharp": "^0.34.2"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "NODE_ENV=development electron .",
+    "prod": "NODE_ENV=production electron .",
+    "build": "electron-builder"
+  },
+  "name": "civarchive",
+  "version": "1.0.0",
+  "main": "main.js",
+  "devDependencies": {
+    "electron": "^36.3.2",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.civarchive.app",
+    "win": {
+      "target": "portable"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

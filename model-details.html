@@ -1,0 +1,109 @@
+<!D    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; connect-src 'self' https://civitai.com https://chrome-devtools-frontend.appspot.com; worker-src 'self' blob:;";CTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://civitai.com;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Details - CivitAI Archiver</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>    <header>
+        <h1><a href="#" id="homeLink"><i class="fas fa-robot"></i> CivitAI Archiver</a></h1>
+        <div class="theme-toggle">
+            <button id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>        <div class="model-details">
+            <button id="backBtn">
+                <i class="fas fa-arrow-left"></i> Back to Models
+            </button>
+            
+            <div class="model-header">
+                <div class="model-header-info">
+                    <h2 id="modelName"></h2>
+                </div>
+                <div class="model-header-actions">
+                    <div class="model-stats">
+                        <span><i class="fas fa-download"></i> <span id="downloadCount">0</span></span>
+                        <span><i class="fas fa-thumbs-up"></i> <span id="thumbsUpCount">0</span></span>
+                    </div>
+                    <div id="civitaiLinkContainer"></div>
+                </div>
+            </div>
+
+            <div class="model-content">                <div class="model-info">
+                    <div class="creator-info">
+                        <h3>Created by <span id="creatorName"></span></h3>
+                    </div>
+                    <div class="base-model-info">
+                        <h4>Base Model: <span id="baseModelName">N/A</span></h4>
+                    </div>
+                    <div class="model-version">
+                        <h3>Version: <span id="versionName"></span></h3>
+                        <div class="trained-words" id="trainedWords"></div>
+                    </div>
+                    <div class="model-description" id="modelDescription"></div>
+                    <div class="model-files">
+                        <h3>Files</h3>
+                        <ul id="filesList"></ul>
+                        <div class="model-file-info">
+                            <h4>Local File:</h4>
+                            <a href="#" class="safetensors-path" id="safetensorsPath"></a>
+                        </div>
+                    </div>
+                    <div class="model-training">
+                        <h3>Training Details</h3>
+                        <div id="trainingDetails"></div>
+                    </div>
+                </div>
+
+                <div class="model-gallery">
+                    <h3>Example Images</h3>
+                    <div class="gallery-container" id="galleryContainer"></div>
+                    <div class="image-details" id="imageDetails">
+                        <div class="image-preview-container">
+                            <img id="largeImage" src="" alt="Selected image preview" class="preview-image">
+                            <div class="expand-hint">
+                                <i class="fas fa-expand"></i>
+                            </div>
+                        </div>                        <div class="image-meta" id="imageMeta"></div>
+                        <div class="image-resources" id="imageResources">
+                            <h4>Resources Used</h4>
+                            <div class="resources-list" id="resourcesList"></div>
+                        </div>
+                        <div class="prompts">
+                            <div class="prompt">
+                                <h4>Prompt</h4>
+                                <pre id="positivePrompt"></pre>
+                            </div>
+                            <div class="prompt">
+                                <h4>Negative Prompt</h4>
+                                <pre id="negativePrompt"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-bar" id="statusBar"></div>
+
+        <!-- Image Modal -->
+        <div class="modal" id="imageModal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <img id="modalImage" src="" alt="Full size image">
+                <div class="image-actions">
+                    <button id="prevImage"><i class="fas fa-chevron-left"></i></button>
+                    <button id="nextImage"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="model-details.js"></script>
+</body>
+</html>

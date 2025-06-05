@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://civitai.com;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivitAI Archiver</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>    <header>
+        <h1><a href="#" id="homeLink"><i class="fas fa-robot"></i> CivitAI Archiver</a></h1>
+        <div class="theme-toggle">
+            <button id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <div class="controls-container">
+            <div class="upload-box" id="uploadBox">
+                <h3>Upload Model Files</h3>
+                <p>Drag & drop .safetensors files here or click to browse</p>
+                <input type="file" id="fileInput" multiple accept=".safetensors" style="display: none;">
+                <p class="note">Only .safetensors files are supported</p>
+            </div>
+            <button id="loadBtn" disabled>Load Selected Files</button>            <div class="folder-controls">
+                <div class="folder-input">
+                    <input type="text" id="folderPathInput" placeholder="Enter folder path to scan">
+                    <button id="browseFolderBtn" class="browse-button">
+                        <i class="fas fa-folder-open"></i> Browse
+                    </button>
+                    <button id="addFolderBtn">Add Folder</button>
+                    <button id="showFoldersBtn" class="square-button">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <div id="watchedFoldersList" class="watched-folders-list" style="display: none;">
+                    <div class="watched-folders-header">
+                        <h3>Watched Folders</h3>
+                    </div>
+                    <div id="watchedFoldersContent"></div>
+                </div>
+            </div>
+        </div>        <div class="status-bar" id="statusBar"></div>        <!-- Search and Filter Section -->
+        <div class="search-filter-container" id="searchFilterContainer">
+            <div class="search-section">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search by model name, creator, or filename...">
+                    <button id="clearSearch" class="clear-search-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="search-stats" id="searchStats"></div>
+            </div>
+              <div class="filter-section">
+                <div class="filter-group">
+                    <label for="creatorFilter">Creator:</label>
+                    <select id="creatorFilter">
+                        <option value="">All Creators</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="baseModelFilter">Base Model:</label>
+                    <select id="baseModelFilter">
+                        <option value="">All Base Models</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="modelTypeFilter">Type:</label>
+                    <select id="modelTypeFilter">
+                        <option value="">All Types</option>
+                    </select>
+                </div>
+                  <div class="filter-group">
+                    <label for="sortSelect">Sort by:</label>
+                    <select id="sortSelect">
+                        <option value="name">Name (A-Z)</option>
+                        <option value="nameReverse">Name (Z-A)</option>
+                        <option value="modelType">Model Type</option>
+                        <option value="baseModel">Base Model</option>
+                        <option value="fileSize">File Size</option>
+                        <option value="downloads">Downloads</option>
+                        <option value="likes">Likes</option>
+                    </select>
+                </div>
+                
+                <button id="favoritesFilterBtn" class="clear-filters-btn">
+                    <i class="fas fa-heart"></i> Favorites Only
+                </button>
+                <button id="clearFilters" class="clear-filters-btn">Clear All Filters</button>
+            </div>
+        </div>        <!-- Enhanced Controls Bar -->        <div class="enhanced-controls" id="enhancedControls">
+            <div class="view-controls">
+                <div class="view-mode-toggle">
+                    <button id="gridViewBtn" class="view-btn active">
+                        <i class="fas fa-th"></i> Grid
+                    </button>
+                    <button id="listViewBtn" class="view-btn">
+                        <i class="fas fa-list"></i> List
+                    </button>
+                </div>
+                <button id="refreshCacheBtn" class="clear-filters-btn">
+                    <i class="fas fa-sync-alt"></i> Refresh Cache
+                </button>
+            </div>
+            
+            <div class="selection-controls" id="selectionControls" style="display: none;">
+                <span id="selectionCount">0 selected</span>
+                <button id="selectAllBtn" class="selection-btn">
+                    <i class="fas fa-check-square"></i> Select All
+                </button>
+                <button id="deselectAllBtn" class="selection-btn">
+                    <i class="fas fa-square"></i> Clear
+                </button>
+                <button id="deleteSelectedBtn" class="selection-btn danger">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+                <button id="addToFavoritesBtn" class="selection-btn">
+                    <i class="fas fa-heart"></i> Favorite
+                </button>
+                <button id="exportSelectedBtn" class="selection-btn">
+                    <i class="fas fa-download"></i> Export
+                </button>            </div>        </div>        <!-- Top Pagination Controls -->
+        <div class="pagination-controls pagination-top" id="topPaginationControls">
+            <button id="topPrevPage" class="pagination-btn">
+                <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            <span id="topPageInfo">Page 1 of 1</span>
+            <button id="topNextPage" class="pagination-btn">
+                Next <i class="fas fa-chevron-right"></i>
+            </button>
+        </div><div class="model-grid" id="modelGrid">
+            <!-- Models will be loaded here -->
+        </div>
+
+        <div class="pagination-controls pagination-bottom">
+            <button id="prevPage" class="pagination-btn">
+                <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            <span id="pageInfo">Page 1 of 1</span>
+            <button id="nextPage" class="pagination-btn">
+                Next <i class="fas fa-chevron-right"></i>            </button>
+        </div>
+    </main>
+    
+    <!-- Context Menu -->
+    <div class="context-menu" id="contextMenu" style="display: none;">
+        <div class="context-menu-item" id="contextOpenDetails">
+            <i class="fas fa-eye"></i> Open Details
+        </div>
+        <div class="context-menu-item" id="contextToggleFavorite">
+            <i class="fas fa-heart"></i> <span id="favoriteText">Add to Favorites</span>
+        </div>
+        <div class="context-menu-item" id="contextCopyPath">
+            <i class="fas fa-copy"></i> Copy File Path
+        </div>
+        <div class="context-menu-item" id="contextRevealExplorer">
+            <i class="fas fa-folder-open"></i> Reveal in Explorer
+        </div>
+        <div class="context-menu-separator"></div>
+        <div class="context-menu-item danger" id="contextDelete">
+            <i class="fas fa-trash"></i> Delete Model
+        </div>    </div>
+
+    <!-- Custom Confirmation Dialog -->
+    <div id="confirmDialog" class="modal" style="display: none;">
+        <div class="modal-content confirmation-dialog">
+            <h3 id="confirmTitle">Confirm Action</h3>
+            <div id="confirmMessage"></div>
+            <div class="confirmation-buttons">
+                <button id="confirmCancel" class="btn-secondary">Cancel</button>
+                <button id="confirmOk" class="btn-danger">OK</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="favorites-manager.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
