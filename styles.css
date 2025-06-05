@@ -1073,6 +1073,20 @@ header h1 a:hover {
     justify-content: center;
 }
 
+/* Override modal-content for confirmation dialogs */
+.modal-content.confirmation-dialog {
+    width: 25vw;
+    min-width: 300px;
+    max-width: 500px;
+    height: auto;
+    max-height: 90vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
 .close {
     position: absolute;
     top: 15px;
@@ -2208,9 +2222,17 @@ header h1 a:hover {
 
 /* Custom Confirmation Dialog */
 .confirmation-dialog {
-    max-width: 500px;
     padding: 2rem;
     text-align: center;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    height: auto !important;
 }
 
 .confirmation-dialog h3 {
@@ -2222,8 +2244,11 @@ header h1 a:hover {
 .confirmation-dialog #confirmMessage {
     color: var(--text-color);
     margin-bottom: 2rem;
-    line-height: 1.5;
+    line-height: 1.6;
     white-space: pre-line;
+    text-align: left;
+    word-wrap: break-word;
+    max-width: 100%;
 }
 
 .confirmation-buttons {

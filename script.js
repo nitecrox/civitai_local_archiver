@@ -878,18 +878,23 @@ document.addEventListener('DOMContentLoaded', async function() {    // Check if 
         
         updateSelectionUI();
     }
-    
-    function clearAllSelections() {
-        // Clear all selections across all pages
-        const allModels = getDisplayModels();
-        allModels.forEach(model => {
-            selectedModels.delete(getModelKey(model));
+      function clearAllSelections() {
+        console.log('clearAllSelections called, clearing selections...');
+        
+        // Clear the selection set first
+        selectedModels.clear();
+        
+        // Only update visible cards on current page for performance
+        const currentModels = getDisplayModels().slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+        currentModels.forEach(model => {
             updateModelCardSelection(model);
         });
         
-        selectedModels.clear();
+        // Update UI
         updateSelectionUI();
-    }    async function deleteSelectedModels() {
+        
+        console.log('All selections cleared successfully');
+    }async function deleteSelectedModels() {
         console.log('deleteSelectedModels called');
         console.log('selectedModels.size:', selectedModels.size);
         
